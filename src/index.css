@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-[#0A0E12] text-white;
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+}
+@layer base {
+  /* Hide cursor globally for desktop */
+  @media (min-width: 768px) {
+    body, a, button {
+      cursor: none !important;
+    }
+  }
+}
