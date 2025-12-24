@@ -34,7 +34,7 @@ const Loader = ({ finishLoading }) => {
           transition={{ duration: 0.5, ease: "easeOut" }}
           className="text-4xl md:text-6xl font-black tracking-tighter"
         >
-          JEROD<span className="text-blue-500">.DEV</span>
+          JEROODI<span className="text-blue-500">.DEV</span>
         </motion.h1>
       </div>
 

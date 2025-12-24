@@ -32,7 +32,7 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
         {/* Logo */}
         <a href="#" className="text-2xl font-bold tracking-tighter text-white">
-          DEV.<span className="text-blue-500">JEROD</span>
+          DEV.<span className="text-blue-500">JEROODI</span>
         </a>
 
         {/* Desktop Links */}
