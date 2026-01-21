@@ -1,6 +1,7 @@
 export const projects = [
   {
     title: "Drug Warehouse Management",
+    image: "src/assets/projects/App-Screens-Showcase-Presentation copy.webp",
     description: "A robust mobile solution for inventory and logistics. Built with Clean Architecture to ensure a modular, testable, and scalable codebase. Features real-time stock tracking and warehouse optimization.",
     tags: ["Flutter", "Clean Architecture", "Logistics", "Mobile"],
     link: "#", // Add your link if available
@@ -15,6 +16,7 @@ export const projects = [
   },    
   {
     title: "Al-Hadara Student App",
+    image: "src/assets/projects/PSD_6 copy.webp",
     description: "A comprehensive learning portal for students. Featuring biometric login, an integrated e-wallet for tuition payments, and real-time push notifications. Built with Hive for offline access to course materials and schedules.",
     tags: ["Flutter", "BLoC", "E-Wallet", "Hive", "WebSockets"],
     link: "#", 
@@ -22,6 +24,7 @@ export const projects = [
   },
   {
     title: "Al-Hadara Teacher Portal",
+    
     description: "A mobile management tool for educators to track student progress, manage attendance, and broadcast announcements. Implemented secure token-based sessions and modular Clean Architecture for easy maintenance.",
     tags: ["Flutter", "BloC", "Teacher Tools", "Agile","Hive"],
     link: "#", 
@@ -29,6 +32,7 @@ export const projects = [
   },
   {
   title: "QuitMate",
+  image: "src/assets/projects/PSD_6 copy2.webp",
   description: "A privacy-first wellness app to quit smoking and manage compulsive behaviors. Engineered with a local-first approach using Isar DB and Riverpod for reactive state management. Features a robust CI/CD pipeline and automated testing suites to ensure 99.9% stability.",
   tags: ["Flutter", "Riverpod", "Isar DB", "CI/CD", "Testing", "Firebase"],
   link: "#", 
