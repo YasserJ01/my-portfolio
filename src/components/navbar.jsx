@@ -59,11 +59,13 @@ const Navbar = () => {
             </a>
           ))}
           <motion.a
-            href="/resume.pdf"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="bg-blue-600 text-white px-5 py-2 rounded-full text-sm font-bold shadow-lg shadow-blue-600/20"
-          >
+  href="/resume.pdf" // Points to public/resume.pdf
+  target="_blank"    // Opens in a new tab
+  rel="noopener noreferrer"
+  whileHover={{ scale: 1.05 }}
+  whileTap={{ scale: 0.95 }}
+  className="bg-blue-600 text-white px-5 py-2 rounded-full text-sm font-bold shadow-lg shadow-blue-600/20"
+>
             Resume
           </motion.a>
         </div>
