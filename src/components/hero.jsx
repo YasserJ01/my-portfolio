@@ -73,7 +73,7 @@ const Hero = () => {
             <code className="text-xs md:text-base leading-relaxed whitespace-nowrap block">
               <p className="text-blue-400">const developer = {"{"}</p>
               <p className="pl-4 text-gray-300">name: <span className="text-emerald-400">'Yasser Jeroodi'</span>,</p>
-              <p className="pl-4 text-gray-300">role: <span className="text-emerald-400">'Flutter Developer'</span>,</p>
+              <p className="pl-4 text-gray-300">role: <span className="text-emerald-400">'Flutter Developer, Fresh QA Tester'</span>,</p>
               <p className="pl-4 text-gray-300">
                 skills: [<span className="text-orange-300">'Flutter', 'Dart', 'Firebase', 'REST APIs'</span>],
               </p>
