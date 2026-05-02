@@ -2,12 +2,14 @@ import { motion } from 'framer-motion';
 import { Mail, Phone, ArrowUpRight, Copy, CheckCircle2, Send } from 'lucide-react';
 import { useState } from 'react';
 import Reveal from './Reveal';
+// 1. Import Formspree hooks
+import { useForm, ValidationError } from '@formspree/react';
 
 const Contact = () => {
   const [copied, setCopied] = useState(false);
-  const [formStatus, setFormStatus] = useState('idle'); // idle | sending | success | error
-  const formspreeUrl = 'https://formspree.io/f/yourFormId';
-  const isPlaceholderEndpoint = formspreeUrl.includes('yourFormId');
+  
+  // 2. Initialize the Formspree hook with your ID
+  const [state, handleSubmit] = useForm("mjglkzpd");
 
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text);
@@ -15,35 +17,32 @@ const Contact = () => {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (isPlaceholderEndpoint) {
-      setFormStatus('error');
-      return;
-    }
-    setFormStatus('sending');
-    const form = e.target;
-    const data = new FormData(form);
-
-    try {
-      const res = await fetch(formspreeUrl, {
-        method: 'POST',
-        body: data,
-        headers: { Accept: 'application/json' },
-      });
-
-      if (res.ok) {
-        setFormStatus('success');
-        form.reset();
-      } else {
-        setFormStatus('error');
-      }
-    } catch {
-      setFormStatus('error');
-    }
-
-    setTimeout(() => setFormStatus('idle'), 5000);
-  };
+  // 3. The "state.succeeded" property replaces your manual "success" status
+  if (state.succeeded) {
+    return (
+      <section className="py-24 px-6 max-w-7xl mx-auto" id="contact">
+        <div className="bg-white/80 border border-slate-200 p-8 rounded-3xl shadow-[0_24px_50px_rgba(15,23,42,0.1)] max-w-lg mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="h-full flex flex-col items-center justify-center text-center py-12"
+          >
+            <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mb-4">
+              <CheckCircle2 className="text-emerald-600" size={32} />
+            </div>
+            <h4 className="text-xl font-bold text-slate-800 mb-2">Message sent!</h4>
+            <p className="text-slate-500 text-sm">Thanks for reaching out — I&apos;ll get back to you within 24 hours.</p>
+            <button 
+              onClick={() => window.location.reload()} 
+              className="mt-6 text-teal-600 text-sm font-medium hover:underline"
+            >
+              Send another message
+            </button>
+          </motion.div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="py-24 px-6 max-w-7xl mx-auto" id="contact">
@@ -55,7 +54,6 @@ const Contact = () => {
       </Reveal>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-
         {/* Left: Info */}
         <div className="space-y-6">
           <h3 className="text-2xl font-semibold mb-8 text-slate-800">
@@ -63,7 +61,6 @@ const Contact = () => {
             <span className="text-teal-700">Let&apos;s build something remarkable.</span>
           </h3>
 
-          {/* Email */}
           <motion.div
             whileHover={{ x: 8 }}
             className="group p-6 bg-white/70 border border-slate-200 rounded-2xl flex items-center justify-between shadow-[0_18px_40px_rgba(15,23,42,0.08)]"
@@ -86,7 +83,6 @@ const Contact = () => {
             </button>
           </motion.div>
 
-          {/* Phone */}
           <motion.div
             whileHover={{ x: 8 }}
             className="group p-6 bg-white/70 border border-slate-200 rounded-2xl flex items-center justify-between shadow-[0_18px_40px_rgba(15,23,42,0.08)]"
@@ -108,7 +104,6 @@ const Contact = () => {
             </a>
           </motion.div>
 
-          {/* Response time note */}
           <p className="text-slate-500 text-sm font-mono pl-1">
             ⏱ Typical response time: within 24 hours
           </p>
@@ -116,65 +111,70 @@ const Contact = () => {
 
         {/* Right: Form */}
         <div className="bg-white/80 border border-slate-200 p-8 rounded-3xl shadow-[0_24px_50px_rgba(15,23,42,0.1)]">
-          {formStatus === 'success' ? (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="h-full flex flex-col items-center justify-center text-center py-12"
-            >
-              <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mb-4">
-                <CheckCircle2 className="text-emerald-600" size={32} />
-              </div>
-              <h4 className="text-xl font-bold text-slate-800 mb-2">Message sent!</h4>
-              <p className="text-slate-500 text-sm">Thanks for reaching out — I&apos;ll get back to you within 24 hours.</p>
-            </motion.div>
-          ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="Name"
+                    required
+                    className="w-full bg-white border border-slate-200 rounded-xl p-4 text-slate-800 placeholder-slate-400 focus:outline-none focus:border-teal-500 transition-colors text-sm"
+                  />
+                  <ValidationError prefix="Name" field="name" errors={state.errors} className="text-red-500 text-xs mt-1" />
+                </div>
+                
+                <div className="space-y-1">
+                  <input
+                    id="email"
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                    required
+                    className="w-full bg-white border border-slate-200 rounded-xl p-4 text-slate-800 placeholder-slate-400 focus:outline-none focus:border-teal-500 transition-colors text-sm"
+                  />
+                  <ValidationError prefix="Email" field="email" errors={state.errors} className="text-red-500 text-xs mt-1" />
+                </div>
+              </div>
+
+              <div className="space-y-1">
                 <input
                   type="text"
-                  name="name"
-                  placeholder="Name"
+                  name="subject"
+                  placeholder="Subject"
                   required
                   className="w-full bg-white border border-slate-200 rounded-xl p-4 text-slate-800 placeholder-slate-400 focus:outline-none focus:border-teal-500 transition-colors text-sm"
                 />
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Email"
-                  required
-                  className="w-full bg-white border border-slate-200 rounded-xl p-4 text-slate-800 placeholder-slate-400 focus:outline-none focus:border-teal-500 transition-colors text-sm"
-                />
+                <ValidationError prefix="Subject" field="subject" errors={state.errors} className="text-red-500 text-xs mt-1" />
               </div>
-              <input
-                type="text"
-                name="subject"
-                placeholder="Subject"
-                required
-                className="w-full bg-white border border-slate-200 rounded-xl p-4 text-slate-800 placeholder-slate-400 focus:outline-none focus:border-teal-500 transition-colors text-sm"
-              />
-              <textarea
-                name="message"
-                placeholder="Tell me about your project..."
-                rows="5"
-                required
-                className="w-full bg-white border border-slate-200 rounded-xl p-4 text-slate-800 placeholder-slate-400 focus:outline-none focus:border-teal-500 transition-colors resize-none text-sm"
-              />
 
-              {formStatus === 'error' && (
+              <div className="space-y-1">
+                <textarea
+                  id="message"
+                  name="message"
+                  placeholder="Tell me about your project..."
+                  rows="5"
+                  required
+                  className="w-full bg-white border border-slate-200 rounded-xl p-4 text-slate-800 placeholder-slate-400 focus:outline-none focus:border-teal-500 transition-colors resize-none text-sm"
+                />
+                <ValidationError prefix="Message" field="message" errors={state.errors} className="text-red-500 text-xs mt-1" />
+              </div>
+
+              {/* Global Error Message */}
+              {state.errors && !state.succeeded && (
                 <p className="text-red-500 text-xs font-mono">
-                  Formspree endpoint not configured yet. Update it to enable submissions.
+                  Something went wrong. Please check the fields and try again.
                 </p>
               )}
 
               <motion.button
                 type="submit"
-                disabled={formStatus === 'sending'}
-                whileHover={{ scale: formStatus === 'sending' ? 1 : 1.02 }}
+                disabled={state.submitting}
+                whileHover={{ scale: state.submitting ? 1 : 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 className="w-full bg-teal-600 hover:bg-teal-700 disabled:bg-teal-600/50 text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-teal-600/20 flex items-center justify-center gap-2"
               >
-                {formStatus === 'sending' ? (
+                {state.submitting ? (
                   <>
                     <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                     Sending...
@@ -186,12 +186,7 @@ const Contact = () => {
                   </>
                 )}
               </motion.button>
-
-              <p className="text-center text-xs text-slate-500 font-mono">
-                Powered by Formspree · Update the endpoint to enable.
-              </p>
             </form>
-          )}
         </div>
       </div>
     </section>

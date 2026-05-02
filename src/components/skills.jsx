@@ -7,7 +7,8 @@ import {
   ShieldCheck,
   TestTube,
   GitBranch,
-  Sparkles
+  Sparkles,
+  Zap // Added for the header icon
 } from 'lucide-react';
 
 const Skills = () => {
@@ -90,14 +91,51 @@ const Skills = () => {
   };
 
   return (
-    <section className="py-24 px-6 max-w-7xl mx-auto" id="skills">
-      <Reveal>
-        <div className="mb-4">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">Flutter Skill Matrix</h2>
-          <div className="h-1.5 w-20 bg-teal-600 rounded-full" />
+    <section style={{ padding: '120px 24px', maxWidth: 1280, margin: '0 auto' }} id="skills">
+      
+      {/* Updated Header - Matching Projects style */}
+      <motion.div
+        initial={{ opacity: 0, y: 24 }} 
+        whileInView={{ opacity: 1, y: 0 }} 
+        viewport={{ once: true }}
+        style={{ marginBottom: 64 }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 16 }}>
+          <div style={{ width: 32, height: 1, background: 'var(--cyan)' }} />
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: '#0f766e', letterSpacing: '0.2em' }}>
+            04 / EXPERTISE
+          </span>
         </div>
-      </Reveal>
+        
+        <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'baseline', justifyContent: 'space-between', gap: 16 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+            <div style={{ width: 48, height: 48, borderRadius: 16, background: 'rgba(14,165,166,0.14)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Zap size={20} color="#0f766e" />
+            </div>
+            <div>
+              <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2.2rem, 4vw, 3.5rem)', fontWeight: 800, letterSpacing: '-0.04em', color: 'var(--text-primary)', margin: 0 }}>
+                Technical stack.
+              </h2>
+              <p style={{ fontFamily: 'var(--font-body)', fontSize: 14, color: 'var(--text-secondary)', margin: 0 }}>
+                A comprehensive matrix of my Flutter and Dart capabilities.
+              </p>
+            </div>
+          </div>
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-muted)', letterSpacing: '0.1em' }}>
+            {skillCategories.length} categories
+          </span>
+        </div>
 
+        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 18 }}>
+          {['T-Shaped Developer', 'Clean Code', 'Performance First'].map((pill) => (
+            <span key={pill} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.1em', padding: '6px 12px', borderRadius: 999, border: '1px solid rgba(16,24,40,0.12)', background: 'rgba(255,255,255,0.7)', color: 'var(--text-secondary)' }}>
+              <Sparkles size={12} /> {pill}
+            </span>
+          ))}
+        </div>
+      </motion.div>
+
+      {/* Skills Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {skillCategories.map((category, index) => (
           <motion.div

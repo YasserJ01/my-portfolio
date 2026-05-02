@@ -74,7 +74,7 @@ const Loader = ({ finishLoading }) => {
             YASSER <span style={{ color: 'var(--cyan)' }}>JEROODI</span>
           </h1>
           <p style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-muted)', letterSpacing: '0.2em', marginTop: 8, textAlign: 'center' }}>
-            FLUTTER · MOBILE · WEB
+            FLUTTER · MOBILE 
           </p>
         </motion.div>
       </div>
