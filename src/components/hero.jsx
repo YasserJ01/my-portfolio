@@ -241,12 +241,6 @@ const Hero = () => {
                 </motion.a>
               ))}
             </motion.div>
-
-            <motion.div variants={itemVariants} style={{ display: 'flex', gap: 28, paddingTop: 24, borderTop: '1px solid rgba(16,24,40,0.12)', background: 'rgba(255,255,255,0.65)', borderRadius: 18, paddingLeft: 18, paddingRight: 18 }}>
-              <StatItem value={`${years}+`} label="Years Flutter" />
-              <StatItem value={`${apps}+`} label="Apps shipped" />
-              <StatItem value={`${uptime}.9%`} label="Crash-free rate" />
-            </motion.div>
           </motion.div>
 
           <motion.div
