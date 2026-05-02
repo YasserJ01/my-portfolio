@@ -1,122 +1,150 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Download } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
+const resumeUrl = '/Yasser%20Jeroodi%20-%20Flutter%20Developer%20-%20CV.pdf';
+
+const navLinks = [
+  { name: 'About',    href: '#about' },
+  { name: 'Projects', href: '#projects' },
+  { name: 'Skills',   href: '#skills' },
+  { name: 'Contact',  href: '#contact' },
+];
+
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen]     = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [active, setActive]     = useState('');
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Lock body scroll when menu is open
   useEffect(() => {
-    document.body.style.overflow = isOpen ? 'hidden' : 'unset';
+    document.body.style.overflow = isOpen ? 'hidden' : '';
   }, [isOpen]);
 
-  const navLinks = [
-    { name: 'Projects', href: '#projects' },
-    { name: 'Skills', href: '#skills' },
-    { name: 'Contact', href: '#contact' },
-  ];
-
-  const menuVariants = {
-    closed: { opacity: 0, height: 0, transition: { staggerChildren: 0.05, staggerDirection: -1 } },
-    open: { opacity: 1, height: '100vh', transition: { staggerChildren: 0.1, delayChildren: 0.2 } }
-  };
-
-  const linkVariants = {
-    closed: { x: -20, opacity: 0 },
-    open: { x: 0, opacity: 1 }
-  };
+  useEffect(() => {
+    const sections = document.querySelectorAll('section[id]');
+    const observer = new IntersectionObserver(
+      entries => entries.forEach(e => { if (e.isIntersecting) setActive(e.target.id); }),
+      { threshold: 0.4 }
+    );
+    sections.forEach(s => observer.observe(s));
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      className={`fixed w-full z-[100] transition-all duration-300 ${
-        scrolled || isOpen ? 'py-4 bg-[#0a0a0a]/90 backdrop-blur-lg border-b border-white/10' : 'py-6 bg-transparent'
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-        {/* Logo */}
-        <a href="#" className="text-2xl font-bold tracking-tighter text-white z-[110]">
-          DEV.<span className="text-blue-500">JEROODI</span>
-        </a>
+    <>
+      <motion.nav
+        initial={{ y: -80, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        style={{
+          position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
+          background: scrolled ? 'rgba(248,246,241,0.92)' : 'transparent',
+          backdropFilter: scrolled ? 'blur(16px)' : 'none',
+          WebkitBackdropFilter: scrolled ? 'blur(16px)' : 'none',
+          borderBottom: scrolled ? '1px solid rgba(16,24,40,0.08)' : '1px solid transparent',
+          padding: scrolled ? '12px 0' : '22px 0',
+          transition: 'background 0.4s, padding 0.3s, border-color 0.4s',
+        }}
+      >
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
 
-        {/* Desktop Links */}
-        <div className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              className="text-sm font-medium text-gray-300 hover:text-blue-400 transition-colors"
+          {/* Logo */}
+          <a href="#" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div style={{
+              width: 38, height: 38,
+              border: '1.5px solid rgba(14,165,166,0.5)',
+              borderRadius: 12,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              background: 'rgba(255,255,255,0.8)',
+              boxShadow: '0 10px 30px rgba(15,23,42,0.08)',
+            }}>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--cyan)', fontWeight: 600 }}>YJ</span>
+            </div>
+            <span style={{ fontFamily: 'var(--font-display)', fontSize: 18, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.03em' }}>
+              Yasser <span style={{ color: 'var(--cyan)' }}>Jeroodi</span>
+            </span>
+          </a>
+
+          {/* Desktop links */}
+          <div className="hidden md:flex" style={{ alignItems: 'center', gap: 36 }}>
+            {navLinks.map(({ name, href }) => (
+              <a
+                key={name}
+                href={href}
+                style={{
+                  fontFamily: 'var(--font-body)',
+                  fontSize: 14, fontWeight: 500,
+                  color: active === href.slice(1) ? '#0f766e' : 'var(--text-secondary)',
+                  textDecoration: 'none',
+                  position: 'relative', paddingBottom: 4,
+                  transition: 'color 0.25s',
+                }}
+              >
+                {name}
+                {active === href.slice(1) && (
+                  <motion.div layoutId="nav-pill"
+                    style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 2, background: 'var(--cyan)', borderRadius: 999, boxShadow: '0 0 12px rgba(14,165,166,0.4)' }}
+                  />
+                )}
+              </a>
+            ))}
+            <motion.a
+              href={resumeUrl} target="_blank" rel="noopener noreferrer" download
+              whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 6,
+                fontFamily: 'var(--font-mono)', fontSize: 11, fontWeight: 500,
+                color: '#f8fafc', background: 'var(--cyan)',
+                padding: '10px 20px', borderRadius: 999, textDecoration: 'none',
+                letterSpacing: '0.08em', boxShadow: '0 20px 40px rgba(14,165,166,0.25)',
+              }}
             >
-              {link.name}
-            </a>
-          ))}
-          <motion.a
-  href="/resume.pdf" // Points to public/resume.pdf
-  target="_blank"    // Opens in a new tab
-  rel="noopener noreferrer"
-  whileHover={{ scale: 1.05 }}
-  whileTap={{ scale: 0.95 }}
-  className="bg-blue-600 text-white px-5 py-2 rounded-full text-sm font-bold shadow-lg shadow-blue-600/20"
->
-            Resume
-          </motion.a>
+              <Download size={12} /> RESUME
+            </motion.a>
+          </div>
+
+          {/* Mobile toggle */}
+          <button onClick={() => setIsOpen(!isOpen)} className="md:hidden"
+            style={{ background: 'none', border: 'none', color: 'var(--text-primary)', padding: 4, zIndex: 110 }}>
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
+      </motion.nav>
 
-        {/* Mobile Toggle */}
-        <button 
-          className="md:hidden text-white z-[110] p-2" 
-          onClick={() => setIsOpen(!isOpen)}
-          aria-label="Toggle Menu"
-        >
-          {isOpen ? <X size={28} /> : <Menu size={28} />}
-        </button>
-      </div>
-
-      {/* Full Screen Mobile Menu Overlay */}
+      {/* Mobile menu */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            variants={menuVariants}
-            initial="closed"
-            animate="open"
-            exit="closed"
-            className="fixed inset-0 bg-[#0a0a0a] flex flex-col items-center justify-center space-y-8 md:hidden overflow-hidden"
+            initial={{ opacity: 0, clipPath: 'inset(0 0 100% 0)' }}
+            animate={{ opacity: 1, clipPath: 'inset(0 0 0% 0)' }}
+            exit={{ opacity: 0, clipPath: 'inset(0 0 100% 0)' }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            style={{ position: 'fixed', inset: 0, zIndex: 99, background: 'rgba(248,246,241,0.98)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 36 }}
           >
-            {navLinks.map((link) => (
-              <motion.a
-                key={link.name}
-                variants={linkVariants}
-                href={link.href}
-                onClick={() => setIsOpen(false)}
-                className="text-4xl font-bold text-gray-200 hover:text-blue-500 transition-colors"
+            {navLinks.map(({ name, href }, i) => (
+              <motion.a key={name} href={href} onClick={() => setIsOpen(false)}
+                initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.07 + 0.1 }}
+                style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2.2rem, 9vw, 3.8rem)', fontWeight: 700, color: 'var(--text-primary)', textDecoration: 'none', letterSpacing: '-0.03em' }}
               >
-                {link.name}
+                {name}
               </motion.a>
             ))}
-            
-            <motion.a
-              variants={linkVariants}
-              href="/resume.pdf"
-              onClick={() => setIsOpen(false)}
-              className="mt-4 bg-blue-600 text-white px-8 py-3 rounded-full text-xl font-bold"
+            <motion.a href={resumeUrl} target="_blank" rel="noopener noreferrer" download onClick={() => setIsOpen(false)}
+              initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.42 }}
+              style={{ fontFamily: 'var(--font-mono)', fontSize: 13, color: '#0f766e', border: '1px solid rgba(14,165,166,0.4)', padding: '12px 36px', borderRadius: 999, textDecoration: 'none', letterSpacing: '0.12em', background: 'rgba(255,255,255,0.8)' }}
             >
-              Resume
+              DOWNLOAD RESUME
             </motion.a>
-
-            {/* Background Decoration for Menu */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-blue-600/5 blur-[120px] -z-10 rounded-full" />
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.nav>
+    </>
   );
 };
 
